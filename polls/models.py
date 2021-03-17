@@ -1,3 +1,5 @@
+from functools import reduce
+
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -9,6 +11,12 @@ class Question(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - timedelta(days=1)
+
+    def vote_count(self):
+        return reduce(lambda x, y: x.votes + y.votes, self.choice_set.all())
+
+    def choices(self):
+        return sorted(self.choice_set.all(), key=lambda x: x.votes, reverse=True)
 
     def __str__(self):
         return self.question_text
