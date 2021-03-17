@@ -1,9 +1,31 @@
-<h1>{{ question.question_text }}</h1>
+{% extends '_partial/layout.html' %}
 
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
+{% block content %}
+    <h1 class="text-xl py-4">{{ question.question_text }}</h1>
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+    <ul>
+        {% for choice in question.choices %}
+            <li>
+                <div class="relative pt-3" style="width: calc(({{ choice.votes }} / {{ question.vote_count }}) * 100%)">
+                    <div class="relative">
+                        <span {% if forloop.counter0 == 0 %} class="text-lg font-bold text-blue-400" {% endif %}>
+                            {{ choice.choice_text }}
+                        </span>
+                        <span class="text-gray-400 absolute bottom-0 right-2 text-xs">{{ choice.votes }} / {{ question.vote_count }}</span>
+                    </div>
+                    <div class="h-1"></div>
+                    <div class="h-4 {% if forloop.counter0 == 0 %} bg-blue-400 {% else %} bg-blue-200 {% endif %} rounded-lg w-full"></div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="flex justify-center pt-8">
+        <a class="block group cursor-pointer relative z-10 transform duration-200 hover:scale-110" href="{% url 'polls:detail' question.id %}">
+            <div class="px-4 py-2 bg-gray-200 rounded text-gray-700 font-bold duration-200 group-hover:bg-blue-400 group-hover:text-white">
+                Vote again?
+            </div>
+            <div class="bg-blue-200 rounded text-gray-700 font-bold duration-200 transform absolute inset-0 group-hover:-rotate-5 group-hover:scale-105 -z-10"></div>
+        </a>
+    </div>
+{% endblock %}

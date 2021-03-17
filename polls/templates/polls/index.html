@@ -1,9 +1,19 @@
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+{% extends '_partial/layout.html' %}
+
+{% block content %}
+    <h1 class="text-xl py-4">Select a poll:</h1>
+
+    {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+                <li class="transform duration-200 hover:text-blue-400 hover:translate-x-2">
+                    <a class="px-4 py-2 block" href="{% url 'polls:detail' question.id %}">
+                        {{ question.question_text }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-gray-400">No polls are available.</p>
+    {% endif %}
+{% endblock %}

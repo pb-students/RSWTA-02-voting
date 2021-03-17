@@ -1,12 +1,33 @@
-<h1>{{ question.question_text }}</h1>
+{% extends '_partial/layout.html' %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+    <h1 class="text-xl py-4">{{ question.question_text }}</h1>
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
-{% csrf_token %}
-{% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-{% endfor %}
-<input type="submit" value="Vote">
-</form>
+    {% if error_message %}
+        <p class="text-red-400 pb-2">{{ error_message }}</p>
+    {% endif %}
+
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        {% for choice in question.choice_set.all %}
+            <label class="block flex items-center group py-3 cursor-pointer group" for="choice{{ forloop.counter }}">
+                <input class="appearance-none h-5 w-5 bg-gray-200 rounded transform transition group-hover:scale-115 group-hover:bg-blue-200 checked:rotate-45 checked:bg-blue-400 checked:scale-115"
+                       type="radio"
+                       name="choice"
+                       id="choice{{ forloop.counter }}"
+                       value="{{ choice.id }}">
+                <span class="text-gray-700 pl-3 transform duration-200 group-hover:translate-x-2">
+                    {{ choice.choice_text }}
+                </span>
+            </label>
+        {% endfor %}
+
+        <div class="flex justify-center">
+            <div class="group cursor-pointer relative z-10 transform duration-200 hover:scale-110">
+                <input class="opacity-0 inset-0 absolute cursor-pointer appearance-none block w-full" type="submit" value="">
+                <div class="px-4 py-2 bg-gray-200 rounded text-gray-700 font-bold duration-200 group-hover:bg-blue-400 group-hover:text-white">Vote</div>
+                <div class="bg-blue-200 rounded text-gray-700 font-bold duration-200 transform absolute inset-0 group-hover:-rotate-10 group-hover:scale-105 -z-10"></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
