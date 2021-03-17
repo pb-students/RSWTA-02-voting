@@ -139,3 +139,7 @@ cython_debug/
 
 # Idea
 .idea/
+
+# Node files
+node_modules
+yarn.lock
