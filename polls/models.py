@@ -13,7 +13,11 @@ class Question(models.Model):
         return self.pub_date >= timezone.now() - timedelta(days=1)
 
     def vote_count(self):
-        return reduce(lambda x, y: x.votes + y.votes, self.choice_set.all())
+        count = 0
+        for choice in self.choice_set.all():
+            count += choice.votes
+
+        return count
 
     def choices(self):
         return sorted(self.choice_set.all(), key=lambda x: x.votes, reverse=True)
