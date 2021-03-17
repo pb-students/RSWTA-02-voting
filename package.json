@@ -28,7 +28,8 @@
     "watch": "npm-watch",
     "livereload": "livereload -e css,html,py",
     "serve": "python manage.py runserver",
+    "migrate": "python manage.py migrate",
     "dev": "npm-run-all --parallel watch livereload serve",
-    "install": "pip install django-livereload-server"
+    "install": "pip install Django django-livereload-server; yarn migrate"
   }
 }
